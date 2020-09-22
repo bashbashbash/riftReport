@@ -2,37 +2,36 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
+// contains data on all champions
+var champions map[string]interface{}
+
 func main() {
-	summonerName := "bashbashbash"
-	var emptyUserInfo UserInfo
-	userInfo := getJSONDataFromResp("https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/"+summonerName+"?api_key="+apiKey, emptyUserInfo)
+	requests := []string{"https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/bashbashbash?api_key=" + apiKey,
+		"https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/***?api_key=" + apiKey,
+		"http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/champion.json"}
+	var id string
+	for i := 0; i < 3; i++ {
+		var jsonObject interface{}
+		// can only update 1 if 0 has retrieved key
+		if i == 1 {
+			requests[i] = strings.ReplaceAll(requests[i], "***", id)
+		}
 
-	userInfoJSON, _ := json.MarshalIndent(&userInfo, "", "  ")
-	fmt.Printf("MarshalIndent funnction output\n %s\n", string(userInfoJSON))
-
-	// details := summonerDetails(userInfo.ID)
-	// detailsJSON, _ := json.MarshalIndent(details, "", "  ")
-	// fmt.Printf("MarshalIndent funnction output\n %s\n", string(detailsJSON))
-}
-
-func summonerDetails(accountID string) LeagueEntries {
-	resp, err := http.Get()
-	printIferr(err)
-
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	printIferr(err)
-
-	var leagueEntries []LeagueEntries
-	err = json.Unmarshal(body, &leagueEntries)
-	printIferr(err)
-
-	return leagueEntries[0]
+		jsonObject = getJSONDataFromResp(requests[i], jsonObject)
+		// store key for request[1]
+		if i == 0 {
+			id = jsonObject.(map[string]interface{})["id"].(string)
+		}
+		if i == 2 {
+			champions = jsonObject.(map[string]interface{})
+		}
+		printStructObject(jsonObject)
+	}
 }
 
 func getJSONDataFromResp(requestURL string, jsonContainer interface{}) interface{} {
