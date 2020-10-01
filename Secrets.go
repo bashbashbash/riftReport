@@ -1,3 +1,3 @@
 package main
 
-const apiKey string = "RGAPI-ccfc37b6-fb1a-4e9b-9085-73c3eb362bac"
+const apiKey string = "RGAPI-ae2a906e-027a-4998-b0ca-da5f15b13edb"

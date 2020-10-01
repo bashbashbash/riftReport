@@ -5,6 +5,17 @@ import (
 	"fmt"
 )
 
+func replaceAt(index int, str string, token string) string {
+	var updatedStr string
+	for i, v := range str {
+		updatedStr += string(v)
+		if i == index {
+			updatedStr += token
+		}
+	}
+	return updatedStr
+}
+
 func printIferr(err error) {
 	if err != nil {
 		print(err)

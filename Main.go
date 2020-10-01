@@ -11,10 +11,8 @@ import (
 var champions map[string]interface{}
 
 func main() {
-	requests := []string{"https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-name/bashbashbash?api_key=" + apiKey,
-		"https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/***?api_key=" + apiKey,
-		"http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/champion.json"}
 	var id string
+	requests := []string{USERINFO, OVERALLSTATS, ALLCHAMPDATA, MATCHHISTORY}
 	for i := 0; i < 3; i++ {
 		var jsonObject interface{}
 		// can only update 1 if 0 has retrieved key

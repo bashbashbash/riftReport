@@ -105,3 +105,23 @@ type Champions struct {
 	Version string
 	Data    ChampionName
 }
+
+// MatchlistDto - https://developer.riotgames.com/apis#match-v4/GET_getMatchlist
+type MatchlistDto struct {
+	startIndex int
+	totalGames int
+	endIndex   int
+	matches    MatchReferenceDto
+}
+
+// MatchReferenceDto - https://developer.riotgames.com/apis#match-v4/GET_getMatchlist
+type MatchReferenceDto struct {
+	gameId     int64
+	role       string
+	season     int
+	platformId string
+	champion   int
+	queue      int
+	lane       string
+	timestamp  int64
+}
