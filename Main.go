@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -11,8 +12,9 @@ import (
 var champions map[string]interface{}
 
 func main() {
+	summonerName := os.Args
 	var id string
-	requests := []string{USERINFO, OVERALLSTATS, ALLCHAMPDATA, MATCHHISTORY}
+	requests := getRequests(summonerName[1])
 	for i := 0; i < 3; i++ {
 		var jsonObject interface{}
 		// can only update 1 if 0 has retrieved key
