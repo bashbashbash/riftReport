@@ -153,7 +153,7 @@ type ParticipantIdentityDto struct {
 type PlayerDto struct {
 	profileIcon       int
 	accountID         string
-	matchHistoryUri   string
+	matchHistoryURI   string
 	currentAccountID  string
 	currentPlatformID string
 	summonerName      string
@@ -162,7 +162,7 @@ type PlayerDto struct {
 }
 
 // TeamStatsDto - see MatchDto
-type PlayerDto struct {
+type TeamStatsDto struct {
 	towerKills           int
 	riftHeraldKills      int
 	firstBlood           bool
@@ -318,4 +318,24 @@ type ParticipantStatsDto struct {
 	perkSubStyle                    int
 	statPerk1                       int
 	statPerk2                       int
+}
+
+// ParticipantTimelineDto - see ParticipantDto
+type ParticipantTimelineDto struct {
+	participantID               int
+	csDiffPerMinDeltas          map[string]float64
+	damageTakenPerMinDeltas     map[string]float64
+	role                        string
+	damageTakenDiffPerMinDeltas map[string]float64
+	xpPerMinDeltas              map[string]float64
+	xpDiffPerMinDeltas          map[string]float64
+	lane                        string
+	creepsPerMinDeltas          map[string]float64
+	goldPerMinDeltas            map[string]float64
+}
+
+// MasteryDto - see ParticipantDto
+type MasteryDto struct {
+	rank     int
+	masterID int
 }

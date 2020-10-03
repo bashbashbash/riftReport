@@ -5,33 +5,23 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strings"
 )
 
 // contains data on all champions
 var champions map[string]interface{}
 
 func main() {
-	summonerName := os.Args
-	var id string
-	requests := getRequests(summonerName[1])
-	for i := 0; i < 3; i++ {
-		var jsonObject interface{}
-		// can only update 1 if 0 has retrieved key
-		if i == 1 {
-			requests[i] = strings.ReplaceAll(requests[i], "***", id)
-		}
+	// position 1 argument should be summoner name
+	// TODO add validation
+	process(os.Args[1])
 
-		jsonObject = getJSONDataFromResp(requests[i], jsonObject)
-		// store key for request[1]
-		if i == 0 {
-			id = jsonObject.(map[string]interface{})["id"].(string)
-		}
-		if i == 2 {
-			champions = jsonObject.(map[string]interface{})
-		}
-		printStructObject(jsonObject)
-	}
+}
+
+func process(name string) {
+	userInfo := getUserInfo(name)
+	var jsonObject interface{}
+	jsonObject = getJSONDataFromResp(userInfo, jsonObject)
+	printStructObject(jsonObject)
 }
 
 func getJSONDataFromResp(requestURL string, jsonContainer interface{}) interface{} {
@@ -46,3 +36,5 @@ func getJSONDataFromResp(requestURL string, jsonContainer interface{}) interface
 	printIferr(err)
 	return jsonContainer
 }
+
+// get game

@@ -3,17 +3,20 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 func replaceAt(index int, str string, token string) string {
-	var updatedStr string
-	for i, v := range str {
-		updatedStr += string(v)
+	var tokenized = strings.Split(str, "***")
+	var updated = ""
+	for i, v := range tokenized {
 		if i == index {
-			updatedStr += token
+			updated += token
+		} else {
+			updated += v
 		}
 	}
-	return updatedStr
+	return updated
 }
 
 func printIferr(err error) {
