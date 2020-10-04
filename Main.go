@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -21,7 +22,14 @@ func process(name string) {
 	userInfo := getUserInfo(name)
 	var jsonObject interface{}
 	jsonObject = getJSONDataFromResp(userInfo, jsonObject)
+	value := getValueFromJSONObject(jsonObject, "accountId")
+	fmt.Printf("\n%s\n", value)
 	printStructObject(jsonObject)
+}
+
+func getValueFromJSONObject(jsonObject interface{}, key string) string {
+	casting := jsonObject.(map[string]interface{})
+	return casting[key].(string)
 }
 
 func getJSONDataFromResp(requestURL string, jsonContainer interface{}) interface{} {
