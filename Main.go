@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -10,20 +9,27 @@ import (
 
 // contains data on all champions
 var champions map[string]interface{}
+var encryptedSummonerID string
+var encryptedAccountID string
 
 func main() {
 	// position 1 argument should be summoner name
 	// TODO add validation
 	process(os.Args[1])
-
 }
 
 func process(name string) {
-	userInfo := getUserInfo(name)
+	printUserInfo(name)
+}
+
+// printUserInfo - using a summonerID, print UserInfo Struct which includes
+// Encrypted accountID, Encrypted summonerID, summonerID, ProfileIconID, PUUID, RevisionDate, and SummonerLevel
+func printUserInfo(summonerID string) {
+	userInfo := getUserInfo(summonerID)
 	var jsonObject interface{}
 	jsonObject = getJSONDataFromResp(userInfo, jsonObject)
-	value := getValueFromJSONObject(jsonObject, "accountId")
-	fmt.Printf("\n%s\n", value)
+	setEncryptedSummonerID(getValueFromJSONObject(jsonObject, "id"))
+	setEncryptedAccountID(getValueFromJSONObject(jsonObject, "accountId"))
 	printStructObject(jsonObject)
 }
 
@@ -45,4 +51,18 @@ func getJSONDataFromResp(requestURL string, jsonContainer interface{}) interface
 	return jsonContainer
 }
 
-// get game
+func getEncryptedSummonerID() string {
+	return encryptedSummonerID
+}
+
+func getEncryptedAccountID() string {
+	return encryptedAccountID
+}
+
+func setEncryptedAccountID(eAccountID string) {
+	encryptedAccountID = eAccountID
+}
+
+func setEncryptedSummonerID(eSummonerID string) {
+	encryptedSummonerID = eSummonerID
+}
