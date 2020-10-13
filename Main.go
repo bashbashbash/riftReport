@@ -18,8 +18,15 @@ func main() {
 	process(os.Args[1])
 }
 
-func process(name string) {
-	printUserInfo(name)
+func process(summonerID string) {
+	getEncryptedKeys(summonerID)
+}
+func getEncryptedKeys(summonerID string) {
+	userInfo := getUserInfo(summonerID)
+	var jsonObject interface{}
+	jsonObject = getJSONDataFromResp(userInfo, jsonObject)
+	setEncryptedSummonerID(getValueFromJSONObject(jsonObject, "id"))
+	setEncryptedAccountID(getValueFromJSONObject(jsonObject, "accountId"))
 }
 
 // printUserInfo - using a summonerID, print UserInfo Struct which includes
@@ -28,8 +35,6 @@ func printUserInfo(summonerID string) {
 	userInfo := getUserInfo(summonerID)
 	var jsonObject interface{}
 	jsonObject = getJSONDataFromResp(userInfo, jsonObject)
-	setEncryptedSummonerID(getValueFromJSONObject(jsonObject, "id"))
-	setEncryptedAccountID(getValueFromJSONObject(jsonObject, "accountId"))
 	printStructObject(jsonObject)
 }
 
