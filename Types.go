@@ -145,7 +145,7 @@ type MatchDto struct {
 
 // ParticipantIdentityDto - see MatchDto
 type ParticipantIdentityDto struct {
-	partiticpantId int
+	partiticpantID int
 	player         PlayerDto
 }
 
@@ -177,7 +177,7 @@ type TeamStatsDto struct {
 	firstTower           bool
 	vilemawKills         int
 	firstRiftHerald      bool
-	teamId               int
+	teamID               int
 	win                  string
 }
 

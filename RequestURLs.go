@@ -12,10 +12,17 @@ const OVERALLSTATS = "https://na1.api.riotgames.com/lol/league/v4/entries/by-sum
 const ALLCHAMPDATA = "http://ddragon.leagueoflegends.com/cdn/10.18.1/data/en_US/champion.json"
 
 // MATCHHISTORY - get request
-const MATCHHISTORY = "https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/***?endIndex=***api_key=***"
+const MATCHHISTORY = "https://na1.api.riotgames.com/lol/match/v4/matchlists/by-account/***?endIndex=***&api_key=***"
 
 func getUserInfo(summonerName string) string {
 	userInfoWithSummonerName := strings.Replace(USERINFO, "***", summonerName, 1)
 	userInfoWithSummonerName = strings.Replace(userInfoWithSummonerName, "***", apiKey, 1)
 	return userInfoWithSummonerName
+}
+
+func getMatchHistory() string {
+	reqMatHist := strings.Replace(MATCHHISTORY, "***", getEncryptedAccountID(), 1)
+	reqMatHist = strings.Replace(reqMatHist, "***", "10", 1)
+	reqMatHist = strings.Replace(reqMatHist, "***", apiKey, 1)
+	return reqMatHist
 }

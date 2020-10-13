@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	"github.com/labstack/gommon/log"
 )
 
 // contains data on all champions
@@ -13,23 +15,37 @@ var encryptedSummonerID string
 var encryptedAccountID string
 
 func main() {
-	validateApiKey()
 	// position 1 argument should be summoner name
 	// TODO add validation
 	process(os.Args[1])
 }
 
-func validateApiKey() {
-
-}
-
 func process(summonerID string) {
 	getEncryptedKeys(summonerID)
+	printGameHistory()
+}
+
+func printGameHistory() {
+	getMatches()
+}
+
+func getMatches() {
+	matchHistory := getMatchHistory()
+	var jsonObject interface{}
+	matchListDtoJSONObject, err := getJSONDataFromResp(matchHistory, jsonObject)
+	if err != nil {
+		log.Error("failed to populate userInfoJSON")
+	}
+	printStructObject(matchListDtoJSONObject)
 }
 func getEncryptedKeys(summonerID string) {
 	userInfo := getUserInfo(summonerID)
 	var jsonObject interface{}
-	jsonObject = getJSONDataFromResp(userInfo, jsonObject)
+	jsonObject, err := getJSONDataFromResp(userInfo, jsonObject)
+	if err != nil {
+		log.Error("failed to populate userInfoJSON")
+
+	}
 	setEncryptedSummonerID(getValueFromJSONObject(jsonObject, "id"))
 	setEncryptedAccountID(getValueFromJSONObject(jsonObject, "accountId"))
 }
@@ -39,8 +55,11 @@ func getEncryptedKeys(summonerID string) {
 func printUserInfo(summonerID string) {
 	userInfo := getUserInfo(summonerID)
 	var jsonObject interface{}
-	jsonObject = getJSONDataFromResp(userInfo, jsonObject)
-	printStructObject(jsonObject)
+	userInfoJSON, err := getJSONDataFromResp(userInfo, jsonObject)
+	if err != nil {
+		log.Error("failed to populate userInfoJSON")
+	}
+	printStructObject(userInfoJSON)
 }
 
 func getValueFromJSONObject(jsonObject interface{}, key string) string {
@@ -48,17 +67,27 @@ func getValueFromJSONObject(jsonObject interface{}, key string) string {
 	return casting[key].(string)
 }
 
-func getJSONDataFromResp(requestURL string, jsonContainer interface{}) interface{} {
+func getJSONDataFromResp(requestURL string, jsonContainer interface{}) (interface{}, error) {
 	resp, err := http.Get(requestURL)
 	printIferr(err)
+	if err != nil {
+		return nil, err
+	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	printIferr(err)
+	if err != nil {
+		return nil, err
+	}
 
 	err = json.Unmarshal(body, &jsonContainer)
 	printIferr(err)
-	return jsonContainer
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonContainer, nil
 }
 
 func getEncryptedSummonerID() string {
