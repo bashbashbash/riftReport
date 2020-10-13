@@ -13,9 +13,14 @@ var encryptedSummonerID string
 var encryptedAccountID string
 
 func main() {
+	validateApiKey()
 	// position 1 argument should be summoner name
 	// TODO add validation
 	process(os.Args[1])
+}
+
+func validateApiKey() {
+
 }
 
 func process(summonerID string) {
