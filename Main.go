@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -23,8 +24,17 @@ func main() {
 func process(summonerID string) {
 	getEncryptedKeys(summonerID)
 	printGameHistory()
+	printWins(summonerID)
 }
 
+func printWins(summonerID string) {
+	gamesWon := countLastNWins(10)
+	fmt.Printf("Player %v has one the past %d out of %d games", summonerID, gamesWon, 10)
+}
+
+func countLastNWins(numberOfMatchesToReview int) int {
+	return numberOfMatchesToReview
+}
 func printGameHistory() {
 	getMatches()
 }
