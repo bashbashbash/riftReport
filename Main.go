@@ -33,6 +33,7 @@ func printWins(summonerID string) {
 }
 
 func countLastNWins(numberOfMatchesToReview int) int {
+	fmt.Printf("%v", getSingleMatchHistory(numberOfMatchesToReview))
 	return numberOfMatchesToReview
 }
 func printGameHistory() {
